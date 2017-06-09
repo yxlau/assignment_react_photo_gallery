@@ -21,7 +21,7 @@ const Gallery = ({images, colsPerRow}) => {
     }
     rows.push(colGroup);
   }
-  
+
   const panels = rows.map((col, i) => (
     <Row key={i}>{col}</Row>
     ))
