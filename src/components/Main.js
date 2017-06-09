@@ -28,7 +28,7 @@ class Main extends Component {
   updatePage = (e) => {
     // we want to change the value of currentPage 
     e.preventDefault();
-    this.setState({ currentPage: e.target.getAttribute('data-pagination-action') - 1 });
+    this.setState({ currentPage: parseInt(e.target.getAttribute('data-pagination-action'), 10) });
 
   }
 
@@ -39,7 +39,9 @@ class Main extends Component {
   render() {
 
     const { filter, images, showNotification, currentPage, imagesPerPage } = this.state
-    const shortlistedImages = images.slice(currentPage * imagesPerPage, currentPage + imagesPerPage)
+    var shortlistedImages = images.slice(currentPage * imagesPerPage, currentPage + imagesPerPage)
+
+    console.log('image count', images.length);
 
     return (
       <main className="container-fluid">
@@ -48,7 +50,7 @@ class Main extends Component {
       </Notification>
       <Filter filter={filter} updateGallery={this.updateFilter} />
       <Gallery images={shortlistedImages} colsPerRow={3} />
-      <Pagination pageCount={images.length/this.state.imagesPerPage} currentPage={currentPage} changePage={this.updatePage} />
+      <Pagination pageCount={Math.ceil(images.length/this.state.imagesPerPage)} currentPage={currentPage} changePage={this.updatePage} />
     </main>
     )
   }

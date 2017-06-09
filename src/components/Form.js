@@ -1,13 +1,12 @@
-import React, {Component} from 'react'
-import InputGroup from './elements/InputGroup'
+import React from 'react'
 
-const Form = ({children}) => {
+const Form = ({ children }) => {
 
 
- return (
-  <form className="form-horizontal">
+  return (
+    <form className="form-horizontal">
     {children}
-</form>
+  </form>
   )
 }
 
