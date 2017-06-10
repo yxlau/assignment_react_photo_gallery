@@ -8,7 +8,6 @@ class Pagination extends Component {
       pageCount: this.props.pageCount,
       currentPage: this.props.currentPage
     }
-    console.log('pagecount', this.props.pageCount);
     this.changePage = this.props.changePage
   }
 
