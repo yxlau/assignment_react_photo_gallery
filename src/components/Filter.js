@@ -3,6 +3,7 @@ import Form from './Form'
 import Select from './elements/Select'
 import InputGroup from './elements/InputGroup'
 
+
 class Filter extends React.Component {
 
   constructor(props) {
@@ -25,12 +26,12 @@ class Filter extends React.Component {
   }
 
   onChangeFilter = (e) => {
-    this.updateGallery({filter: e.target.value});
+    this.updateGallery({ filter: e.target.value });
   }
 
   render() {
 
-    const {filter, filterOptions} = this.state
+    const { filter, filterOptions } = this.state
 
     return (
       <Form>

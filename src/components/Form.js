@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Form = ({ children }) => {
+const Form = ({ children, ...restOfProps }) => {
 
 
   return (
-    <form className="form-horizontal">
+    <form className="form-horizontal" {...restOfProps} >
     {children}
   </form>
   )

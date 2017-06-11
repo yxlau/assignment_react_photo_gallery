@@ -5,8 +5,10 @@ import Gallery from './Gallery.js'
 import Notification from './Notification'
 import Pagination from './Pagination'
 import Sorter from './Sorter'
+import Search from './Search'
 import { filterImages } from '../helpers/filtering'
 import { performSort } from '../helpers/sorting'
+import { performSearch } from '../helpers/searching'
 
 const sortOptions = [
   'Date',
@@ -20,16 +22,16 @@ class Main extends Component {
     this.state = {
       filter: 'All',
       images: Images.data,
-      showNotification: false,
       currentPage: 0,
       imagesPerPage: 12,
       sortBy: 'date',
-      order: 'DESC'
+      order: 'DESC',
+      notificationMessage: '',
     }
     this.updateFilter = this.updateFilter.bind(this)
     this.updatePage = this.updatePage.bind(this)
     this.updateOrder = this.updateOrder.bind(this)
-    this.sortImages();
+    this.searchImages = this.searchImages.bind(this)
   }
 
   updateFilter = (filter) => {
@@ -37,7 +39,6 @@ class Main extends Component {
   }
 
   updateOrder = (e) => {
-    console.log('updateOrder');
     this.setState({
         sortBy: e.target.getAttribute('data-sort-by'),
         order: e.target.getAttribute('data-order')
@@ -46,8 +47,25 @@ class Main extends Component {
     )
   }
 
+  searchImages = (term) => {
+    console.log(term);
+    if (term === '') {
+      this.setState({
+        images: Images.data,
+        notificationMessage: 'No images found for "' + term + '". Showing all images instead'
+      })
+    } else {
+      var images = performSearch(Images.data, term);
+      this.setState({
+        images: images,
+        notificationMessage: images.length + ' results for "' + term + '"'
+      })
+    }
+  }
+
   sortImages = () => {
-    this.setState({ images: performSort(this.state.images, this.state.sortBy, this.state.order) })
+    var images = performSort(this.state.images, this.state.sortBy, this.state.order);
+    this.setState({ images: images })
   }
 
   updatePage = (e) => {
@@ -58,21 +76,34 @@ class Main extends Component {
   }
 
   updateGallery = () => {
-    this.setState({ images: filterImages(this.state.filter, Images.data), showNotification: true, currentPage: 0 }, this.sortImages);
+    var images = filterImages(this.state.filter, Images.data)
+    this.setState({
+      images: images,
+      currentPage: 0,
+      notificationMessage: images.length + ' images(s) found with filter "' + this.state.filter + '"'
+
+    }, this.sortImages);
+  }
+
+  componentDidMount = () => {
+    this.updateGallery();
   }
 
 
 
-  render() {
-    const { filter, images, showNotification, currentPage, imagesPerPage } = this.state
-    var shortlistedImages = images.slice(currentPage * imagesPerPage, (currentPage + 1) * imagesPerPage)
 
+  render() {
+    const { filter, images, showNotification, currentPage, imagesPerPage, notificationMessage } = this.state
+    var shortlistedImages = images.slice(currentPage * imagesPerPage, (currentPage + 1) * imagesPerPage)
+      // {`${images.length} image(s) found with filter "${filter}"`}
+    console.log({ notificationMessage });
 
     return (
       <main className="container-fluid">
-      <Notification display={showNotification} >
-        {`${images.length} image(s) found with filter "${filter}"`}
+      <Notification display={!! notificationMessage} >
+         {notificationMessage}
       </Notification>
+      <Search searchImages={this.searchImages} />
       <Filter filter={filter} updateGallery={this.updateFilter} />
       <Sorter updateOrder={this.updateOrder} options={sortOptions} />
       <Gallery images={shortlistedImages} colsPerRow={3} />
