@@ -48,7 +48,6 @@ class Main extends Component {
   }
 
   searchImages = (term) => {
-    console.log(term);
     if (term === '') {
       this.setState({
         images: Images.data,
@@ -89,14 +88,9 @@ class Main extends Component {
     this.updateGallery();
   }
 
-
-
-
   render() {
     const { filter, images, showNotification, currentPage, imagesPerPage, notificationMessage } = this.state
     var shortlistedImages = images.slice(currentPage * imagesPerPage, (currentPage + 1) * imagesPerPage)
-      // {`${images.length} image(s) found with filter "${filter}"`}
-    console.log({ notificationMessage });
 
     return (
       <main className="container-fluid">

@@ -7,7 +7,6 @@ export function dateString(seconds) {
   var hours = date.getHours() % 12;
   hours = hours === 0 ? 12 : hours;
   var mins = date.getMinutes();
-  console.log(mins);
   mins = mins < 10 ? (mins).toString().padStart(2, '0') : mins;
   return (date.getDate() + 1) + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + ', ' + hours + ':' + mins + ampm;
 }
